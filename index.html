@@ -1,109 +1,276 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Frase del Giorno</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impara ogni giorno</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      background: #f4f4f4;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .header {
       text-align: center;
-      padding: 30px;
+      margin-bottom: 28px;
     }
+
+    .header h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.1;
+    }
+
+    .header p {
+      margin-top: 10px;
+      color: #6b7280;
+      font-size: 18px;
+    }
+
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 28px 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
     }
-    h2 {
-      color: #333;
+
+    .card.locked {
+      background: #e5e7eb;
+      color: #6b7280;
+      position: relative;
     }
-    button {
-      padding: 10px 20px;
-      margin-top: 20px;
-      border: none;
-      background: #0070f3;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
+
+    .day-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .locked .day-badge {
+      background: #d1d5db;
+      color: #4b5563;
+    }
+
+    .phrase-image {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      background: #f9fafb;
+      padding: 10px;
+    }
+
+    .locked .phrase-image {
+      opacity: 0.35;
+      filter: grayscale(100%);
+    }
+
+    .en-label,
+    .it-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .phrase-en {
+      font-size: 34px;
+      font-weight: 800;
+      margin: 0 0 18px;
+      line-height: 1.15;
+    }
+
+    .phrase-it {
+      font-size: 28px;
+      margin: 0 0 18px;
+      line-height: 1.2;
+    }
+
+    .desc {
+      font-size: 21px;
+      font-style: italic;
+      color: #374151;
+      margin: 0;
+    }
+
+    .locked-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 10px 0 8px;
+    }
+
+    .locked-text {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    @media (max-width: 640px) {
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .phrase-en {
+        font-size: 28px;
+      }
+
+      .phrase-it {
+        font-size: 24px;
+      }
+
+      .desc {
+        font-size: 18px;
+      }
+
+      .phrase-image {
+        width: 92px;
+        height: 92px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1>📘 Impara ogni giorno</h1>
+      <p>Una nuova frase al giorno, con corrispettivo culturale in italiano.</p>
+    </div>
 
-<h1>📘 Impara ogni giorno</h1>
+    <div id="app"></div>
 
-<div id="app"></div>
+    <p class="footer-note" id="footerNote"></p>
+  </div>
 
-<button onclick="nextDay()">➡️ Giorno successivo</button>
+  <script>
+    const phrases = [
+      {
+        en: "Break a leg",
+        it: "In bocca al lupo",
+        desc: "Augurio di buona fortuna, non si traduce letteralmente",
+        emoji: "🎭"
+      },
+      {
+        en: "Don't beat around the bush",
+        it: "Non menare il can per l’aia",
+        desc: "Vai dritto al punto",
+        emoji: "🌳"
+      },
+      {
+        en: "It's not my cup of tea",
+        it: "Non fa per me",
+        desc: "Qualcosa che non ti piace o non ti interessa",
+        emoji: "☕"
+      },
+      {
+        en: "Spill the beans",
+        it: "Vuota il sacco",
+        desc: "Rivelare un segreto",
+        emoji: "🫘"
+      },
+      {
+        en: "Once in a blue moon",
+        it: "Una volta ogni morte di papa",
+        desc: "Qualcosa che succede molto raramente",
+        emoji: "🌙"
+      }
+    ];
 
-<script>
-const phrases = [
-  {
-    en: "Break a leg",
-    it: "In bocca al lupo",
-    desc: "Augurio di buona fortuna, non si traduce letteralmente"
-  },
-  {
-    en: "Don't beat around the bush",
-    it: "Non menare il can per l’aia",
-    desc: "Vai dritto al punto"
-  },
-  {
-    en: "It's not my cup of tea",
-    it: "Non fa per me",
-    desc: "Qualcosa che non ti piace o non ti interessa"
-  },
-  {
-    en: "Spill the beans",
-    it: "Vuota il sacco",
-    desc: "Rivelare un segreto"
-  },
-  {
-    en: "Once in a blue moon",
-    it: "Una volta ogni morte di papa",
-    desc: "Qualcosa che succede molto raramente"
-  }
-];
+    function emojiToImage(emoji) {
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+          <rect width="100%" height="100%" rx="28" fill="#ffffff"/>
+          <text x="50%" y="54%" font-size="88" text-anchor="middle" dominant-baseline="middle">
+            ${emoji}
+          </text>
+        </svg>
+      `;
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
 
-let day = localStorage.getItem("day") || 1;
+    let startDate = localStorage.getItem("startDate");
 
-function render() {
-  const app = document.getElementById("app");
-  app.innerHTML = "";
+    if (!startDate) {
+      startDate = new Date().toISOString();
+      localStorage.setItem("startDate", startDate);
+    }
 
-  for (let i = 0; i < day && i < phrases.length; i++) {
-    const p = phrases[i];
+    const today = new Date();
+    const start = new Date(startDate);
+    const diffTime = today - start;
+    const unlockedDays = Math.min(
+      Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1,
+      phrases.length
+    );
 
-    const card = `
-      <div class="card">
-        <h2>Giorno ${i + 1}</h2>
-        <p><strong>🇬🇧 ${p.en}</strong></p>
-        <p>🇮🇹 ${p.it}</p>
-        <p><em>${p.desc}</em></p>
-      </div>
-    `;
+    function render() {
+      const app = document.getElementById("app");
+      const footerNote = document.getElementById("footerNote");
+      app.innerHTML = "";
 
-    app.innerHTML += card;
-  }
-}
+      phrases.forEach((p, index) => {
+        const dayNumber = index + 1;
+        const isUnlocked = dayNumber <= unlockedDays;
 
-function nextDay() {
-  if (day < phrases.length) {
-    day++;
-    localStorage.setItem("day", day);
+        if (isUnlocked) {
+          app.innerHTML += `
+            <div class="card">
+              <div class="day-badge">Giorno ${dayNumber}</div>
+              <img class="phrase-image" src="${emojiToImage(p.emoji)}" alt="Immagine frase giorno ${dayNumber}">
+              <div class="en-label">INGLESE</div>
+              <p class="phrase-en">${p.en}</p>
+              <div class="it-label">ITALIANO</div>
+              <p class="phrase-it">${p.it}</p>
+              <p class="desc">${p.desc}</p>
+            </div>
+          `;
+        } else {
+          app.innerHTML += `
+            <div class="card locked">
+              <div class="day-badge">Giorno ${dayNumber}</div>
+              <img class="phrase-image" src="${emojiToImage("🔒")}" alt="Frase bloccata">
+              <div class="locked-title">Frase bloccata</div>
+              <p class="locked-text">Torna il giorno successivo per sbloccarla.</p>
+            </div>
+          `;
+        }
+      });
+
+      if (unlockedDays < phrases.length) {
+        footerNote.textContent = `Hai sbloccato ${unlockedDays} frase${unlockedDays > 1 ? "e" : ""} su ${phrases.length}.`;
+      } else {
+        footerNote.textContent = "Hai sbloccato tutte le frasi disponibili.";
+      }
+    }
+
     render();
-  } else {
-    alert("Hai finito le frasi!");
-  }
-}
-
-render();
-</script>
-
+  </script>
 </body>
 </html>
