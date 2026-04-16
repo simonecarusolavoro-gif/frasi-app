@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Frase del Giorno</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #333;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      background: #0070f3;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📘 Impara ogni giorno</h1>
+
+<div id="app"></div>
+
+<button onclick="nextDay()">➡️ Giorno successivo</button>
+
+<script>
+const phrases = [
+  {
+    en: "Break a leg",
+    it: "In bocca al lupo",
+    desc: "Augurio di buona fortuna, non si traduce letteralmente"
+  },
+  {
+    en: "Don't beat around the bush",
+    it: "Non menare il can per l’aia",
+    desc: "Vai dritto al punto"
+  },
+  {
+    en: "It's not my cup of tea",
+    it: "Non fa per me",
+    desc: "Qualcosa che non ti piace o non ti interessa"
+  },
+  {
+    en: "Spill the beans",
+    it: "Vuota il sacco",
+    desc: "Rivelare un segreto"
+  },
+  {
+    en: "Once in a blue moon",
+    it: "Una volta ogni morte di papa",
+    desc: "Qualcosa che succede molto raramente"
+  }
+];
+
+let day = localStorage.getItem("day") || 1;
+
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  for (let i = 0; i < day && i < phrases.length; i++) {
+    const p = phrases[i];
+
+    const card = `
+      <div class="card">
+        <h2>Giorno ${i + 1}</h2>
+        <p><strong>🇬🇧 ${p.en}</strong></p>
+        <p>🇮🇹 ${p.it}</p>
+        <p><em>${p.desc}</em></p>
+      </div>
+    `;
+
+    app.innerHTML += card;
+  }
+}
+
+function nextDay() {
+  if (day < phrases.length) {
+    day++;
+    localStorage.setItem("day", day);
+    render();
+  } else {
+    alert("Hai finito le frasi!");
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
