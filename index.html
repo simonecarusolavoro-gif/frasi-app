@@ -222,14 +222,7 @@
       localStorage.setItem("startDate", startDate);
     }
 
-    const today = new Date();
-    const start = new Date(startDate);
-    const diffTime = today - start;
-    const unlockedDays = Math.min(
-      Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1,
-      phrases.length
-    );
-
+    const unlockedDays = phrases.length;
     function render() {
       const app = document.getElementById("app");
       const footerNote = document.getElementById("footerNote");
