@@ -1,274 +1,161 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carte Linguistiche</title>
+
   <style>
-    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       background: #f3f0ea;
-      color: #222;
-      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 16px;
+      height: 100vh;
     }
 
     .app {
       width: 100%;
-      max-width: 420px;
-    }
-
-    .topbar {
-      text-align: center;
-      margin-bottom: 14px;
-    }
-
-    .topbar h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .topbar p {
-      margin: 6px 0 0;
-      color: #666;
-      font-size: 14px;
+      max-width: 400px;
     }
 
     .card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      overflow: hidden;
+      background: white;
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
-    .card-header {
+    .header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-      padding: 4px 4px 0;
+      align-items: center;
     }
 
     .english {
       font-size: 24px;
-      font-weight: 800;
-      line-height: 1.1;
+      font-weight: bold;
     }
 
     .info-btn {
-      border: none;
-      width: 34px;
-      height: 34px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      background: #2d7ff9;
-      color: white;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(45,127,249,0.28);
-    }
-
-    .image-wrap {
-      width: 100%;
-      border-radius: 18px;
-      overflow: hidden;
-      background: #f6f6f6;
-      border: 2px solid #1f1f1f;
-    }
-
-    .image-wrap img {
-      width: 100%;
-      display: block;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-    }
-
-    .controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .btn {
       border: none;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
-      font-weight: 700;
+      background: blue;
+      color: white;
       cursor: pointer;
     }
 
-    .btn-primary {
-      background: #111827;
-      color: white;
-      flex: 1;
+    img {
+      width: 100%;
+      border-radius: 15px;
+      margin-top: 10px;
     }
 
-    .btn-secondary {
-      background: #ece8df;
-      color: #222;
-      flex: 1;
+    button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .panel {
-      margin-top: 12px;
-      border-radius: 16px;
-      padding: 14px;
-      background: #f7f4ee;
-      border: 1px solid #e6dfd2;
+    .italiano, .info {
       display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: #eee;
+      border-radius: 10px;
     }
 
-    .panel.show { display: block; }
-
-    .panel h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-
-    .panel p {
-      margin: 0;
-      line-height: 1.45;
-      font-size: 15px;
-    }
-
-    .footer {
-      margin-top: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .counter {
-      font-size: 14px;
-      color: #666;
-    }
-
-    .next-btn {
-      border: none;
-      border-radius: 14px;
-      padding: 12px 16px;
-      background: #f59e0b;
+    .next {
+      background: orange;
       color: white;
-      font-weight: 800;
-      cursor: pointer;
     }
 
-    @media (max-width: 420px) {
-      .english { font-size: 21px; }
-    }
   </style>
 </head>
+
 <body>
-  <div class="app">
-    <div class="topbar">
-      <h1>Carte linguistiche</h1>
-      <p>Tocca per scoprire traduzione e nota didattica</p>
+
+<div class="app">
+  <div class="card">
+
+    <div class="header">
+      <div class="english" id="en"></div>
+      <button class="info-btn" onclick="toggleInfo()">i</button>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="english" id="englishText"></div>
-        <button class="info-btn" id="infoBtn" aria-label="Mostra spiegazione">i</button>
-      </div>
+    <img id="img">
 
-      <div class="image-wrap">
-        <img id="cardImage" src="" alt="Carta linguistica" />
-      </div>
+    <button onclick="toggleItalian()">Mostra italiano</button>
 
-      <div class="controls">
-        <button class="btn btn-secondary" id="translationBtn">Mostra italiano</button>
-      </div>
+    <div class="italiano" id="it"></div>
+    <div class="info" id="info"></div>
 
-      <div class="panel" id="translationPanel">
-        <h3>Italiano</h3>
-        <p id="italianText"></p>
-      </div>
+    <button class="next" onclick="nextCard()">Prossima carta</button>
 
-      <div class="panel" id="infoPanel">
-        <h3>Nota didattica</h3>
-        <p id="infoText"></p>
-      </div>
-
-      <div class="footer">
-        <div class="counter" id="counterText"></div>
-        <button class="next-btn" id="nextBtn">Prossima carta</button>
-      </div>
-    </div>
   </div>
+</div>
 
-  <script>
-    const cards = [
-      {
-        en: "I'm stuffed",
-        it: "Sono pieno",
-        info: "Può significare ‘imbottito’, ma nella lingua parlata si usa soprattutto per il cibo.",
-        img: "https://chat.openai.com/c/container/file_000000000788720ba44c4649ce1d8ffe"
-      },
-      {
-        en: "I screwed up",
-        it: "Ho fatto un casino",
-        info: "Deriva da ‘avvitare’, ma si usa per dire che hai combinato un disastro.",
-        img: "https://chat.openai.com/c/container/file_00000000e454720bb6f1f26b4273e0a9"
-      },
-      {
-        en: "That's not my thing",
-        it: "Non fa per me",
-        info: "Letteralmente significa ‘non è la mia cosa’, simile all’idea di ‘non è la mia tazza di tè’.",
-        img: "https://chat.openai.com/c/container/file_00000000aad4720b93a6d080e33b2184"
-      }
-    ];
+<script>
 
-    let currentIndex = 0;
+const cards = [
+  {
+    en: "I'm stuffed",
+    it: "Sono pieno",
+    info: "Può significare 'imbottito', ma si usa soprattutto per il cibo.",
+    img: "stuffed.png"
+  },
+  {
+    en: "I screwed up",
+    it: "Ho fatto un casino",
+    info: "Deriva da 'avvitare', ma indica un errore o disastro.",
+    img: "screwed-up.png"
+  },
+  {
+    en: "That's not my thing",
+    it: "Non fa per me",
+    info: "Letteralmente 'non è la mia cosa', simile a 'non è la mia tazza di tè'.",
+    img: "not-my-thing.png"
+  }
+];
 
-    const englishText = document.getElementById('englishText');
-    const italianText = document.getElementById('italianText');
-    const infoText = document.getElementById('infoText');
-    const cardImage = document.getElementById('cardImage');
-    const translationPanel = document.getElementById('translationPanel');
-    const infoPanel = document.getElementById('infoPanel');
-    const translationBtn = document.getElementById('translationBtn');
-    const infoBtn = document.getElementById('infoBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const counterText = document.getElementById('counterText');
+let index = 0;
 
-    function renderCard() {
-      const card = cards[currentIndex];
-      englishText.textContent = card.en;
-      italianText.textContent = card.it;
-      infoText.textContent = card.info;
-      cardImage.src = card.img;
-      cardImage.alt = card.en;
-      translationPanel.classList.remove('show');
-      infoPanel.classList.remove('show');
-      translationBtn.textContent = 'Mostra italiano';
-      counterText.textContent = `Carta ${currentIndex + 1} di ${cards.length}`;
-    }
+function render() {
+  document.getElementById("en").innerText = cards[index].en;
+  document.getElementById("it").innerText = cards[index].it;
+  document.getElementById("info").innerText = cards[index].info;
+  document.getElementById("img").src = cards[index].img;
 
-    translationBtn.addEventListener('click', () => {
-      const isOpen = translationPanel.classList.toggle('show');
-      translationBtn.textContent = isOpen ? 'Nascondi italiano' : 'Mostra italiano';
-    });
+  document.getElementById("it").style.display = "none";
+  document.getElementById("info").style.display = "none";
+}
 
-    infoBtn.addEventListener('click', () => {
-      infoPanel.classList.toggle('show');
-    });
+function toggleItalian() {
+  let el = document.getElementById("it");
+  el.style.display = el.style.display === "block" ? "none" : "block";
+}
 
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % cards.length;
-      renderCard();
-    });
+function toggleInfo() {
+  let el = document.getElementById("info");
+  el.style.display = el.style.display === "block" ? "none" : "block";
+}
 
-    renderCard();
-  </script>
+function nextCard() {
+  index = (index + 1) % cards.length;
+  render();
+}
+
+render();
+
+</script>
+
 </body>
 </html>
