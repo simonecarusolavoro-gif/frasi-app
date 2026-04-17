@@ -3,267 +3,272 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Impara ogni giorno</title>
+  <title>Carte Linguistiche</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      color: #1f2937;
-      padding: 24px 16px 48px;
+      background: #f3f0ea;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
     }
 
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
+    .app {
+      width: 100%;
+      max-width: 420px;
     }
 
-    .header {
+    .topbar {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 14px;
     }
 
-    .header h1 {
+    .topbar h1 {
       margin: 0;
-      font-size: 42px;
-      line-height: 1.1;
+      font-size: 24px;
     }
 
-    .header p {
-      margin-top: 10px;
-      color: #6b7280;
-      font-size: 18px;
+    .topbar p {
+      margin: 6px 0 0;
+      color: #666;
+      font-size: 14px;
     }
 
     .card {
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 28px 24px;
-      margin-bottom: 22px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-      text-align: center;
+      background: #fff;
+      border-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      overflow: hidden;
     }
 
-    .card.locked {
-      background: #e5e7eb;
-      color: #6b7280;
-      position: relative;
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 4px 4px 0;
     }
 
-    .day-badge {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #3730a3;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
-
-    .locked .day-badge {
-      background: #d1d5db;
-      color: #4b5563;
-    }
-
-    .phrase-image {
-      width: 110px;
-      height: 110px;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 18px;
-      border-radius: 18px;
-      background: #f9fafb;
-      padding: 10px;
-    }
-
-    .locked .phrase-image {
-      opacity: 0.35;
-      filter: grayscale(100%);
-    }
-
-    .en-label,
-    .it-label {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
-
-    .phrase-en {
-      font-size: 34px;
+    .english {
+      font-size: 24px;
       font-weight: 800;
-      margin: 0 0 18px;
-      line-height: 1.15;
+      line-height: 1.1;
     }
 
-    .phrase-it {
-      font-size: 28px;
-      margin: 0 0 18px;
-      line-height: 1.2;
-    }
-
-    .desc {
-      font-size: 21px;
-      font-style: italic;
-      color: #374151;
-      margin: 0;
-    }
-
-    .locked-title {
-      font-size: 28px;
-      font-weight: 800;
-      margin: 10px 0 8px;
-    }
-
-    .locked-text {
+    .info-btn {
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #2d7ff9;
+      color: white;
       font-size: 18px;
-      margin: 0;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(45,127,249,0.28);
     }
 
-    .footer-note {
-      margin-top: 18px;
-      text-align: center;
-      color: #6b7280;
+    .image-wrap {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f6f6f6;
+      border: 2px solid #1f1f1f;
+    }
+
+    .image-wrap img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #111827;
+      color: white;
+      flex: 1;
+    }
+
+    .btn-secondary {
+      background: #ece8df;
+      color: #222;
+      flex: 1;
+    }
+
+    .panel {
+      margin-top: 12px;
+      border-radius: 16px;
+      padding: 14px;
+      background: #f7f4ee;
+      border: 1px solid #e6dfd2;
+      display: none;
+    }
+
+    .panel.show { display: block; }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .panel p {
+      margin: 0;
+      line-height: 1.45;
       font-size: 15px;
     }
 
-    @media (max-width: 640px) {
-      .header h1 {
-        font-size: 32px;
-      }
+    .footer {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
 
-      .phrase-en {
-        font-size: 28px;
-      }
+    .counter {
+      font-size: 14px;
+      color: #666;
+    }
 
-      .phrase-it {
-        font-size: 24px;
-      }
+    .next-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      background: #f59e0b;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+    }
 
-      .desc {
-        font-size: 18px;
-      }
-
-      .phrase-image {
-        width: 92px;
-        height: 92px;
-      }
+    @media (max-width: 420px) {
+      .english { font-size: 21px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>📘 Impara ogni giorno</h1>
-      <p>Una nuova frase al giorno, con corrispettivo culturale in italiano.</p>
+  <div class="app">
+    <div class="topbar">
+      <h1>Carte linguistiche</h1>
+      <p>Tocca per scoprire traduzione e nota didattica</p>
     </div>
 
-    <div id="app"></div>
+    <div class="card">
+      <div class="card-header">
+        <div class="english" id="englishText"></div>
+        <button class="info-btn" id="infoBtn" aria-label="Mostra spiegazione">i</button>
+      </div>
 
-    <p class="footer-note" id="footerNote"></p>
+      <div class="image-wrap">
+        <img id="cardImage" src="" alt="Carta linguistica" />
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-secondary" id="translationBtn">Mostra italiano</button>
+      </div>
+
+      <div class="panel" id="translationPanel">
+        <h3>Italiano</h3>
+        <p id="italianText"></p>
+      </div>
+
+      <div class="panel" id="infoPanel">
+        <h3>Nota didattica</h3>
+        <p id="infoText"></p>
+      </div>
+
+      <div class="footer">
+        <div class="counter" id="counterText"></div>
+        <button class="next-btn" id="nextBtn">Prossima carta</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    const phrases = [
+    const cards = [
       {
-        en: "Break a leg",
-        it: "In bocca al lupo",
-        desc: "Augurio di buona fortuna, non si traduce letteralmente",
-        emoji: "🎭"
+        en: "I'm stuffed",
+        it: "Sono pieno",
+        info: "Può significare ‘imbottito’, ma nella lingua parlata si usa soprattutto per il cibo.",
+        img: "https://chat.openai.com/c/container/file_000000000788720ba44c4649ce1d8ffe"
       },
       {
-        en: "Don't beat around the bush",
-        it: "Non menare il can per l’aia",
-        desc: "Vai dritto al punto",
-        emoji: "🌳"
+        en: "I screwed up",
+        it: "Ho fatto un casino",
+        info: "Deriva da ‘avvitare’, ma si usa per dire che hai combinato un disastro.",
+        img: "https://chat.openai.com/c/container/file_00000000e454720bb6f1f26b4273e0a9"
       },
       {
-        en: "It's not my cup of tea",
+        en: "That's not my thing",
         it: "Non fa per me",
-        desc: "Qualcosa che non ti piace o non ti interessa",
-        emoji: "☕"
-      },
-      {
-        en: "Spill the beans",
-        it: "Vuota il sacco",
-        desc: "Rivelare un segreto",
-        emoji: "🫘"
-      },
-      {
-        en: "Once in a blue moon",
-        it: "Una volta ogni morte di papa",
-        desc: "Qualcosa che succede molto raramente",
-        emoji: "🌙"
+        info: "Letteralmente significa ‘non è la mia cosa’, simile all’idea di ‘non è la mia tazza di tè’.",
+        img: "https://chat.openai.com/c/container/file_00000000aad4720b93a6d080e33b2184"
       }
     ];
 
-    function emojiToImage(emoji) {
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
-          <rect width="100%" height="100%" rx="28" fill="#ffffff"/>
-          <text x="50%" y="54%" font-size="88" text-anchor="middle" dominant-baseline="middle">
-            ${emoji}
-          </text>
-        </svg>
-      `;
-      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    let currentIndex = 0;
+
+    const englishText = document.getElementById('englishText');
+    const italianText = document.getElementById('italianText');
+    const infoText = document.getElementById('infoText');
+    const cardImage = document.getElementById('cardImage');
+    const translationPanel = document.getElementById('translationPanel');
+    const infoPanel = document.getElementById('infoPanel');
+    const translationBtn = document.getElementById('translationBtn');
+    const infoBtn = document.getElementById('infoBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const counterText = document.getElementById('counterText');
+
+    function renderCard() {
+      const card = cards[currentIndex];
+      englishText.textContent = card.en;
+      italianText.textContent = card.it;
+      infoText.textContent = card.info;
+      cardImage.src = card.img;
+      cardImage.alt = card.en;
+      translationPanel.classList.remove('show');
+      infoPanel.classList.remove('show');
+      translationBtn.textContent = 'Mostra italiano';
+      counterText.textContent = `Carta ${currentIndex + 1} di ${cards.length}`;
     }
 
-    let startDate = localStorage.getItem("startDate");
+    translationBtn.addEventListener('click', () => {
+      const isOpen = translationPanel.classList.toggle('show');
+      translationBtn.textContent = isOpen ? 'Nascondi italiano' : 'Mostra italiano';
+    });
 
-    if (!startDate) {
-      startDate = new Date().toISOString();
-      localStorage.setItem("startDate", startDate);
-    }
+    infoBtn.addEventListener('click', () => {
+      infoPanel.classList.toggle('show');
+    });
 
-    const unlockedDays = phrases.length;
-    function render() {
-      const app = document.getElementById("app");
-      const footerNote = document.getElementById("footerNote");
-      app.innerHTML = "";
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      renderCard();
+    });
 
-      phrases.forEach((p, index) => {
-        const dayNumber = index + 1;
-        const isUnlocked = dayNumber <= unlockedDays;
-
-        if (isUnlocked) {
-          app.innerHTML += `
-            <div class="card">
-              <div class="day-badge">Giorno ${dayNumber}</div>
-              <img class="phrase-image" src="${emojiToImage(p.emoji)}" alt="Immagine frase giorno ${dayNumber}">
-              <div class="en-label">INGLESE</div>
-              <p class="phrase-en">${p.en}</p>
-              <div class="it-label">ITALIANO</div>
-              <p class="phrase-it">${p.it}</p>
-              <p class="desc">${p.desc}</p>
-            </div>
-          `;
-        } else {
-          app.innerHTML += `
-            <div class="card locked">
-              <div class="day-badge">Giorno ${dayNumber}</div>
-              <img class="phrase-image" src="${emojiToImage("🔒")}" alt="Frase bloccata">
-              <div class="locked-title">Frase bloccata</div>
-              <p class="locked-text">Torna il giorno successivo per sbloccarla.</p>
-            </div>
-          `;
-        }
-      });
-
-      if (unlockedDays < phrases.length) {
-        footerNote.textContent = `Hai sbloccato ${unlockedDays} frase${unlockedDays > 1 ? "e" : ""} su ${phrases.length}.`;
-      } else {
-        footerNote.textContent = "Hai sbloccato tutte le frasi disponibili.";
-      }
-    }
-
-    render();
+    renderCard();
   </script>
 </body>
 </html>
